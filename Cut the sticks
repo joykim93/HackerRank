@@ -31,25 +31,37 @@ function readLine() {
  * The function accepts INTEGER_ARRAY arr as parameter.
  */
 
-function cutTheSticks(arr) {
-    // Write your code here
-    
+function cutTheSticks(arr) {    
     let result = [];
     
+    // #1. 배열내 요소의 총합 
+    // (total sum of array)
     let totalSum = arr.reduce((acc, cur) => acc + cur);
     
+    // #2. 만약 요소의 총합이 0인 경우, [0]을 반환 
+    // (return [0], if totalSum is zero)
     if(totalSum === 0)
         return [0];
     
-    let updatedArr = arr;
+    // #3. 원본 배열을 수정하지 않게하기 위해, 배열 복사 
+    // (copy original array and use it in subsequent calculations to keep original array as original)
+    let updatedArr = arr.slice();
     
+    // #4. 배열내 요소의 총합이 0이 될때까지, while문 반복
     while(totalSum !== 0) {
+        // #5. 배열내 요소중 0을 제거
+        // removing zero elements in array
         let filteredArr = updatedArr.filter((el) => {
             if(el !== 0) return el;
         });
+        
+        // #6. 0을 제외한 배열내 최솟값
+        // find the minimum value in the array excepting zero elements
         let min = Math.min(...filteredArr);
         let cnt = 0;
         
+        // #7. 배열내 요소를 하나씩 조회하면서, 0이 아닌 경우 최소값(min)으로 빼준다
+        // subtracting elements with minimum value if it is not zero
         updatedArr = updatedArr.map((el) => {
             if(el !== 0) {
                 cnt++;
@@ -59,7 +71,12 @@ function cutTheSticks(arr) {
                 return el;
         });
         
+        // #8. 배열내 총합 업데이트
+        // updating the value of totalSum
         totalSum = updatedArr.reduce((acc, cur) => acc + cur);
+        
+        // #9. 현재 iteration에서 빼기한 수를 result 배열에 저장
+        // saving the value of cnt, number of executing substraction in current step
         result.push(cnt);
     };
     
