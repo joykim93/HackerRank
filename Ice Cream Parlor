@@ -1,0 +1,77 @@
+url: https://www.hackerrank.com/challenges/icecream-parlor/problem?isFullScreen=true
+
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n');
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+/*
+ * Complete the 'icecreamParlor' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts following parameters:
+ *  1. INTEGER m
+ *  2. INTEGER_ARRAY arr
+ */
+
+function icecreamParlor(m, arr) {
+
+    
+    for(let i = 0; i < arr.length - 1; i++) {
+        // Step1. 첫번째 친구의 값을 결정
+        let friend_1 = arr[i];
+        
+        // Step2. 설정된 첫번째 친구 값을 기준으로
+        // 문제의 조건을 만족하는 조합이 있는지 조회
+        for(let j = 0; j < arr.length; j++) {
+            // 첫번째와 두번째 친구의 인덱스가 다른경우만 조회한다
+            if(i !== j) {
+                let friend_2 = arr[j];
+                // Step3. 문제의 조건에 만족하는 조합인 경우
+                // 해당 인덱스 조합을 반환한다.
+                if(friend_1 + friend_2 === m) {
+                    return [i + 1, j + 1]
+                }
+            }          
+        }
+    }
+}
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const t = parseInt(readLine().trim(), 10);
+
+    for (let tItr = 0; tItr < t; tItr++) {
+        const m = parseInt(readLine().trim(), 10);
+
+        const n = parseInt(readLine().trim(), 10);
+
+        const arr = readLine().replace(/\s+$/g, '').split(' ').map(arrTemp => parseInt(arrTemp, 10));
+
+        const result = icecreamParlor(m, arr);
+
+        ws.write(result.join(' ') + '\n');
+    }
+
+    ws.end();
+}
